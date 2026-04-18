@@ -297,3 +297,5 @@ Created as a professional, production-ready Bug Tracker system similar to Jira.
 ---
 
 **Built with ❤️ for professional teams**
+#   B u g - T r a c k e r 1  
+ 
