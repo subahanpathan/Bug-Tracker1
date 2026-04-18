@@ -15,6 +15,17 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: false
+    sourcemap: false,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['zustand', 'react-hot-toast', 'react-icons'],
+          'socket-vendor': ['socket.io-client'],
+          'dnd-vendor': ['react-dnd', 'react-dnd-html5-backend', 'react-beautiful-dnd']
+        }
+      }
+    }
   }
 })
