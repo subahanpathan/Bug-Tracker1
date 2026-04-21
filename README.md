@@ -15,8 +15,9 @@ Bug Tracker is a comprehensive, **production-ready**, enterprise-grade issue and
 - ✅ Advanced kanban board
 - ✅ Activity logging & audit trails
 - ✅ Email preferences system
-- ✅ File attachments
+- ✅ File attachments with **Secure Streaming**
 - ✅ Comment threads
+- ✅ **Hardened Security**: BOLA/IDOR protection throughout
 - ✅ Role-based permissions
 
 ## 🏗️ Architecture & Deployment
@@ -200,9 +201,11 @@ See `database/README.md` for detailed schema documentation.
 
 ## 🔐 Security Features
 
+- **BOLA/IDOR Protection** - Granular permission checks on all project/ticket IDs
+- **Secure Attachment Streaming** - Authorized file access replacing insecure static folders
 - **JWT Authentication** - Secure token-based auth
 - **Password Hashing** - bcrypt with salt rounds
-- **CORS Protection** - Restricted cross-origin requests
+- **CORS Protection** - Strict origin whitelist from environment variables
 - **Rate Limiting** - 100 requests per 15 minutes
 - **Input Validation** - Sanitization on all inputs
 - **SQL Injection Prevention** - Parameterized queries
@@ -299,7 +302,7 @@ Open http://localhost:3000 in your browser
    NODE_ENV=production
    CORS_ORIGIN=https://your-vercel-url.vercel.app
    MAX_FILE_SIZE=5242880
-   UPLOAD_DIR=/tmp/uploads/
+   # UPLOAD_DIR= (Now using protected streaming, no longer public)
    ```
 6. Click **Deploy**
 7. ⏳ Wait 5-10 minutes
