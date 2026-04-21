@@ -8,10 +8,10 @@ http://localhost:5000/api
 ```
 
 ## Authentication
-All protected endpoints require JWT token in Authorization header:
-```
 Authorization: Bearer <token>
 ```
+
+**Security Note:** All ID-based routes (e.g., `/:id`, `/:projectId`) are protected by BOLA/IDOR middleware. You must be a member of the relevant project to access its tickets, comments, or attachments.
 
 ## Response Format
 All responses follow this format:
@@ -320,6 +320,18 @@ DELETE /attachments/:id
 Authorization: Bearer <token>
 ```
 
+### Stream Attachment (Secure Access)
+```http
+GET /attachments/stream/:filename
+Authorization: Bearer <token>
+
+Response (200):
+[Binary Stream of file]
+
+Note: This endpoint replaces direct static access to /uploads. 
+It verifies that the user is a member of the project associated with the file.
+```
+
 ## Users Endpoints
 
 ### Get All Users
@@ -398,11 +410,12 @@ Authorization: Bearer <token>
 - Returns 429 Too Many Requests when limit exceeded
 
 ## CORS
-- Allows requests from `http://localhost:3000`
-- Supports credentials and all HTTP methods
+- Dynamic configuration via `CORS_ORIGIN` environment variable.
+- Defaults to `http://localhost:3000` in development.
+- Supports credentials and all HTTP methods.
 
 ## Security Headers
 - Uses Helmet.js for security headers
 - Content Security Policy enabled
 - XSS Protection enabled
-- CORS properly configured
+- BOLA Protection: All resource-based endpoints (bugs, comments, attachments, users) validate ownership/permissions before processing requests.

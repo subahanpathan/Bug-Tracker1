@@ -2,8 +2,9 @@
  * Permission Matrix Documentation
  * Role-Based Access Control (RBAC) for Bug Tracker
  *
- * This file documents the permission matrix for all roles in the application
- * and provides examples of how permissions are enforced.
+ * This file documents the permission matrix for all roles in the application.
+ * Hardened BOLA/IDOR protection enforces that all resource access (Bugs, Comments, 
+ * Attachments) is strictly scoped to the projects the user is authorized to view.
  */
 
 // ====================================
@@ -68,16 +69,16 @@
 // Example: GET /api/tickets/:id/comments
 
 // comment:update - Edit own comments
-// Allowed: Owner, Admin (own only)
-// Denied: Developer, Viewer
+// Allowed: Authors (of the comment), Admin, Owner
+// Denied: Developers (non-author), Viewers
 // Example: PUT /api/comments/:id
-//   Can only edit own comment (created_by check)
+//   Hardened check: userId === comment.user_id OR user is project admin
 
 // comment:delete - Delete comments
-// Allowed: Owner, Admin (own only)
-// Denied: Developer, Viewer
+// Allowed: Authors (of the comment), Admin, Owner
+// Denied: Developers (non-author), Viewers
 // Example: DELETE /api/comments/:id
-//   Can only delete own comment
+//   Hardened check: userId === comment.user_id OR user is project admin
 
 // ====================================
 // ATTACHMENT PERMISSIONS
@@ -88,13 +89,14 @@
 // Denied: Viewer
 // Example: POST /api/attachments
 
-// attachment:download - Download files
+// attachment:download - Download files (via Secure Streaming)
 // Allowed: Owner, Admin, Developer, Viewer
-// Example: GET /api/attachments/:id/download
+// Example: GET /api/attachments/stream/:filename
+//   Requires project membership. Public static access is disabled.
 
 // attachment:delete - Delete files
-// Allowed: Owner, Admin
-// Denied: Developer, Viewer
+// Allowed: Author (of attachment), Admin, Owner
+// Denied: Developers (non-author), Viewers
 // Example: DELETE /api/attachments/:id
 
 // ====================================
