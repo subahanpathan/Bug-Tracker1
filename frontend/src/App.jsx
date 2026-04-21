@@ -38,7 +38,7 @@ function App() {
 
   useEffect(() => {
     // Check if user is still authenticated on app load
-    const savedToken = localStorage.getItem('authToken');
+    const savedToken = localStorage.getItem('token');
     if (savedToken && !token) {
       useAuthStore.setState({ token: savedToken, isAuthenticated: true });
     }
