@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from './store';
+import { Toaster } from 'react-hot-toast';
 
 // Pages
 import LoginPage from './pages/LoginPage';
@@ -50,7 +51,9 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <Routes>
+    <>
+      <Toaster position="top-right" reverseOrder={false} />
+      <Routes>
         {/* Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -105,7 +108,7 @@ function App() {
             </PrivateRoute>
           }
         />
-      </Routes>
+    </>
   );
 }
 
